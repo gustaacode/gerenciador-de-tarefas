@@ -50,12 +50,12 @@ if (isset($_POST['email']) || isset($_POST['senha'])) //Verifica se exite uma en
 
         <p>
             <label>Email</label>
-            <input type="text" id="email" name="email"> 
+            <input type="text" id="email" name="email">
         </p>
 
         <p>
             <label>Senha</label>
-            <input type="password" id="senha" name="senha"> 
+            <input type="password" id="senha" name="senha">
         </p>
 
         <p>
