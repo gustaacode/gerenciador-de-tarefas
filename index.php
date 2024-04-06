@@ -20,7 +20,7 @@
                 <input type="password" id="password" name="password" placeholder="sua senha">
                 <input type="submit" value="Entrar">
             </form>
-            <p>Ainda não tem uma conta?<a href="#">Criar conta</a></p>
+            <p>Ainda não tem uma conta?<a href="cadastro.php">Criar conta</a></p>
 
             <?php
             include('conexao.php'); //Inclui todo o código do arquivo na index.php;
