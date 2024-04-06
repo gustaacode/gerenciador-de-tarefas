@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css">
     <link rel="icon" href="imagens/task_icon.svg">
-    <title>Login - Gerenciador de Tarefas</title>
+    <title>Cadastro - Gerenciador de Tarefas</title>
 </head>
 
 <body>
@@ -16,11 +16,10 @@
                 <img src="imagens/task_icon.svg">
             </div>
             <form method="POST">
-                <input type="text" name="email" placeholder="seu email" autofocus>
-                <input type="password" name="password" placeholder="sua senha">
-                <input type="submit" value="Entrar">
+                <input type="text" name="email" placeholder="Digite um email" autofocus>
+                <input type="password" name="password" placeholder="Crie uma senha">
+                <input type="submit" value="Cadastrar">
             </form>
-            <p>Ainda não tem uma conta?<a href="cadastro.php">Criar conta</a></p>
         </div>
     </section>
 </body>
