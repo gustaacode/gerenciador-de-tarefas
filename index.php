@@ -16,8 +16,8 @@
                 <img src="imagens/task_icon.svg">
             </div>
             <form method="POST">
-                <input type="text" id="email" name="email" placeholder="seu email" autofocus>
-                <input type="password" id="password" name="password" placeholder="sua senha">
+                <input type="text" id="email" name="email" placeholder="seu email" autofocus required>
+                <input type="password" id="password" name="password" placeholder="sua senha" autofocus required>
                 <input type="submit" value="Entrar">
             </form>
             <p>Ainda não tem uma conta?<a href="cadastro.php">Criar conta</a></p>
@@ -25,13 +25,7 @@
             <?php
             include('conexao.php'); //Inclui todo o código do arquivo na index.php;
 
-            if (isset($_POST['email']) && isset($_POST['password'])) //Verifica se exite uma entrada de dados - email e senha;
-
-                if (strlen($_POST['email']) == 0) { //Verifica a quantidade de caracteres preenchidas pelo usuário (email e senha);
-                    echo 'Preencha seu e-mail!';
-                } else if (strlen($_POST['password']) == 0) { //Verifica a quantidade de caracteres preenchidas pelo usuário (email e senha);
-                    echo 'Preencha sua senha!';
-                } else {
+            if (isset($_POST['email']) && isset($_POST['password'])) { //Verifica se exite uma entrada de dados - email e senha;
 
                     $email = $mysqli->real_escape_string($_POST['email']); //Limpa a entrada de dados feita pelo usuário (função - real_escape_string);
                     $senha = $mysqli->real_escape_string($_POST['password']); //Limpa a entrada de dados feita pelo usuário (função - real_escape_string);
@@ -54,6 +48,7 @@
                         header("Location: gen_tarefas.php"); //Redireciona o usuário para a tela principal;
                         exit;
                         //Basicamente a sessão deixa esses dados armazenados para que possa ser utilizado em outro momento, até mesmo em outra página; 
+                    
                     } else {
                         echo "Falha ao logar, Email ou Senha incorreto!";
                     }
