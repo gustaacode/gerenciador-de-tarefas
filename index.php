@@ -1,3 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+</head>
+
+<body>
+    <h1>Acesse a sua conta</h1>
+    <form action="" method="POST">
+
+        <p>
+            <label>Email</label>
+            <input type="text" id="email" name="email">
+        </p>
+
+        <p>
+            <label>Senha</label>
+            <input type="password" id="senha" name="senha">
+        </p>
+
+        <p>
+            <button type="submit">Entrar</button>
+        </p>
+    </form>
+
+</body>
+
+</html>
+
 <?php
 include('conexao.php'); //Inclui todo o código do arquivo na index.php;
 
@@ -35,37 +67,3 @@ if (isset($_POST['email']) || isset($_POST['senha'])) //Verifica se exite uma en
         }
     }
 ?>
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login</title>
-</head>
-
-<body>
-    <h1>Acesse a sua conta</h1>
-    <form action="" method="POST">
-
-        <p>
-            <label>Email</label>
-            <input type="text" id="email" name="email">
-        </p>
-
-        <p>
-            <label>Senha</label>
-            <input type="password" id="senha" name="senha">
-        </p>
-
-        <p>
-            <button type="submit">Entrar</button>
-        </p>
-    </form>
-
-</body>
-
-</html>
-
-
-andrey
