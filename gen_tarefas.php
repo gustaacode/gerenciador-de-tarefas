@@ -13,8 +13,8 @@ if (isset($_SESSION['id_user'])) {
 
     $sql = "INSERT INTO tarefas (id_user, descript) VALUES ('$id_do_usuario', '$descricao')"; // Constrói a consulta SQL
 
-    // Executa a consulta SQL
     mysqli_query($conn, $sql);
+    // Executa a consulta SQL 
 
     // Use o valor da variável de sessão onde for necessário
     echo "O ID do usuário é: " . $id_do_usuario;
@@ -24,7 +24,7 @@ if (isset($_SESSION['id_user'])) {
 
 // Adiciona uma nova tarefa
 if (isset($_POST['new-task'])) {
-    // Obtém a descrição da tarefa do formulário
+    // Obtém a descrição da tarefa do   
     $descricao = $_POST['descript'];
 
     // Obtém o ID do usuário logado

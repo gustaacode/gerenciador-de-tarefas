@@ -23,7 +23,7 @@
             <p>Ainda não tem uma conta?<a href="cadastro.php">Criar conta</a></p>
 
             <?php
-            include('conexao.php'); //Inclui todo o código do arquivo na index.php;
+            include('conexao.php'); //Inclui todo o código do arquivo na index.php
 
             if (isset($_POST['email']) && isset($_POST['password'])) { //Verifica se exite uma entrada de dados - email e senha;
 
