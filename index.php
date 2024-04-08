@@ -42,8 +42,8 @@
                     if (!isset($_SESSION)) { //Verifica se existe uma sessão iniciada;
                         session_start(); //Inicia uma sessão caso não tenha;
                     }
-                        
-                    $_SESSION['id_user'] = $id_do_usuario['id_user'];
+
+                    $_SESSION['id_user'] = $id_do_usuario['id_user']; //Armazena o id do usuário logado;
                     $_SESSION['email'] = $usuario['email']; //Amazena o valores do banco relacionado ao ID, na sessão;
                     $_SESSION['nome'] = $usuario['nome']; //Amazena o valores do banco relacionado ao nome, na sessão;
                     header("Location: gen_tarefas.php"); //Redireciona o usuário para a tela principal;
