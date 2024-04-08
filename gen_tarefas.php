@@ -10,8 +10,8 @@ if (!isset($_SESSION)) { // Verifica se existe uma sessão iniciada
 if (isset($_SESSION['id_user'])) {
     $id_do_usuario = $_SESSION['id_user'];
 
-    // Constrói a consulta SQL
-    $sql = "INSERT INTO tarefas (id_user, descript) VALUES ('$id_do_usuario', '$descricao')";
+
+    $sql = "INSERT INTO tarefas (id_user, descript) VALUES ('$id_do_usuario', '$descricao')"; // Constrói a consulta SQL
 
     // Executa a consulta SQL
     mysqli_query($conn, $sql);
