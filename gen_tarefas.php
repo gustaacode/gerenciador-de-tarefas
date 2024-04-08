@@ -1,4 +1,4 @@
-<?php             
+<?php
 // Inclui o arquivo de conexão com o banco de dados
 include('conexao.php');
 
@@ -9,6 +9,13 @@ if (!isset($_SESSION)) { // Verifica se existe uma sessão iniciada
 // Verifique se a variável de sessão está definida e obtenha seu valor
 if (isset($_SESSION['id_user'])) {
     $id_do_usuario = $_SESSION['id_user'];
+
+    // Constrói a consulta SQL
+    $sql = "INSERT INTO tarefas (id_user, descript) VALUES ('$id_do_usuario', '$descricao')";
+
+    // Executa a consulta SQL
+    mysqli_query($conn, $sql);
+
     // Use o valor da variável de sessão onde for necessário
     echo "O ID do usuário é: " . $id_do_usuario;
 } else {
@@ -19,31 +26,19 @@ if (isset($_SESSION['id_user'])) {
 if (isset($_POST['new-task'])) {
     // Obtém a descrição da tarefa do formulário
     $descricao = $_POST['descript'];
-    
+
     // Obtém o ID do usuário logado
-    $usuario_id = $_SESSION['id_user'];
-    
-    // Verifica se o ID do usuário está definido
-    if (isset($usuario_id)) {
-        // Constrói a consulta SQL
-        $sql = "INSERT INTO tarefas (id_user, descript) VALUES ('$usuario_id', '$descricao')";
-        
-        // Executa a consulta SQL
-        mysqli_query($conn, $sql);
-    } else {
-        // Se o ID do usuário não estiver definido na sessão, exibe uma mensagem de erro
-        echo "Erro: ID do usuário não encontrado na sessão.";
-    }
+    $id_do_usuario = $_SESSION['id_user'];
 }
 
 // Editar uma tarefa
 if (isset($_POST['edit'])) {
     $task_id = $_POST['id_task'];
     $descricao = $_POST['descript'];
-    $usuario_id = $_SESSION['id_user']; // Obtém o ID do usuário logado
+    $id_do_usuario = $_SESSION['id_user']; // Obtém o ID do usuário logado
 
     // Verifica se a tarefa pertence ao usuário logado
-    $sql_check = "SELECT * FROM tarefas WHERE id_task = $task_id AND id_user = $usuario_id";
+    $sql_check = "SELECT * FROM tarefas WHERE id_task = $task_id AND id_user = $id_do_usuario";
     $result_check = $conn->query($sql_check);
 
     if ($result_check->num_rows > 0) {
@@ -62,10 +57,10 @@ if (isset($_POST['edit'])) {
 // Excluir uma tarefa
 if (isset($_POST['delete'])) {
     $task_id = $_POST['id_task'];
-    $usuario_id = $_SESSION['id_user']; // Obtém o ID do usuário logado
+    $id_do_usuario = $_SESSION['id_user']; // Obtém o ID do usuário logado
 
     // Verifica se a tarefa pertence ao usuário logado
-    $sql_check = "SELECT * FROM tarefas WHERE id_task = $task_id AND id_user = $usuario_id";
+    $sql_check = "SELECT * FROM tarefas WHERE id_task = $task_id AND id_user = $id_do_usuario";
     $result_check = $conn->query($sql_check);
 
     if ($result_check->num_rows > 0) {

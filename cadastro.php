@@ -44,12 +44,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") { //Verifica se o método ude envio us
             var email = document.getElementById("email").value;
             var password = document.getElementById("password").value;
 
-            // Verifica se os campos estão preenchidos
-            if (email.trim() === "" || password.trim() === "") {
-                document.getElementById("mensagem").innerHTML = "Preencha todos os campos!";
-                return;
-            }
-
             // Fazer uma solicitação AJAX
             var xhr = new XMLHttpRequest();
             xhr.open("POST", "cadastro.php", true);
@@ -58,18 +52,33 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") { //Verifica se o método ude envio us
             xhr.onreadystatechange = function() {
                 if (xhr.readyState == 4 && xhr.status == 200) {
                     // Resposta recebida com sucesso
-                    document.getElementById("mensagem").innerHTML = xhr.responseText;
                     if (xhr.responseText.includes("sucesso")) {
                         // Se o cadastro foi bem-sucedido, atualiza a interface
-                        document.getElementById("cadastroForm").innerHTML = "Cadastro realizado";
-                        document.getElementById("mensagem").innerHTML = "";
-                        // Adicionar botão "Entrar"
-                        var entrarButton = document.createElement("button");
-                        entrarButton.innerHTML = "Entrar";
-                        entrarButton.onclick = function() {
-                            window.location.href = 'gen_tarefas.php';
+                        document.getElementById("mensagem").innerHTML = "Cadastro realizado com sucesso!";
+
+                        // Remove o botão de cadastrar
+                        document.getElementById("botaoCadastrar").style.display = "none";
+
+                        // Adiciona um novo botão de voltar para o login
+                        var voltarLink = document.createElement("a");
+                        voltarLink.innerHTML = "Voltar para o login";
+                        voltarLink.href = 'index.php'; // Define o link para a página de login
+
+                        // Adiciona um evento onclick para redirecionar para a página de login
+                        voltarLink.onclick = function() {
+                            window.location.href = this.href;
+                            return false; // Impede o comportamento padrão do link
                         };
-                        document.getElementById("cadastroForm").appendChild(entrarButton);
+
+                        // Adiciona o link ao elemento "cadastroForm"
+                        document.getElementById("cadastroForm").appendChild(voltarLink);
+
+
+                        // Adiciona o botão de voltar ao elemento "cadastroForm"
+                        document.getElementById("cadastroForm").appendChild(voltarButton);
+                    } else {
+                        // Se a resposta do servidor não contém "sucesso", exibe uma mensagem de erro
+                        document.getElementById("mensagem").innerHTML = "Erro ao cadastrar. Tente novamente.";
                     }
                 }
             };
@@ -84,11 +93,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") { //Verifica se o método ude envio us
     <section class="area-login">
         <div class="login">
             <img src="imagens/task_icon.svg" style="margin-bottom: 20px;">
-            <div id="cadastroForm">
-                <input type="text" name="email" id="email" placeholder="Digite um email" autofocus>
-                <input type="password" name="password" id="password" placeholder="Crie uma senha">
-                <button type="button" id="botaoCadastrar" onclick="cadastrar()">Cadastrar</button>
-            </div>
+            <form id="cadastroForm">
+                <input type="text" name="email" id="email" placeholder="Digite um email" autofocus required>
+                <input type="password" name="password" id="password" placeholder="Crie uma senha" required>
+                <input type="button" id="botaoCadastrar" onclick="cadastrar()" value="Cadastrar">
+            </form>
             <div id="mensagem"></div>
         </div>
     </section>
