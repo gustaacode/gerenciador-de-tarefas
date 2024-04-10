@@ -1,4 +1,9 @@
 <?php
+
+if (isset($_POST['id_user'])){
+    $id_do_usuario = $_POST['id_user'];    
+}
+
 $usuario = 'root'; //Usuário ADM, pode editar o banco de dados
 $senha = ''; //Usado senha somente em ambientes de produção(empresarial, mercado de trabalho), próprio para a segurança do banco;
 $dataBase = 'gen_tarefas'; //Nome do banco de dados 

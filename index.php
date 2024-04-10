@@ -25,6 +25,8 @@
             <?php
             include('conexao.php'); //Inclui todo o código do arquivo na index.php
 
+            session_start();
+
             if (isset($_POST['email']) && isset($_POST['password'])) { //Verifica se exite uma entrada de dados - email e senha;
 
                 $email = $mysqli->real_escape_string($_POST['email']); //Limpa a entrada de dados feita pelo usuário (função - real_escape_string);
@@ -39,13 +41,21 @@
 
                     $usuario = $sqlQuery->fetch_assoc(); //Associa os dados retornados na variável usuário, facilitando o acesso aos mesmos
 
-                    if (!isset($_SESSION)) { //Verifica se existe uma sessão iniciada;
-                        session_start(); //Inicia uma sessão caso não tenha;
+                    // Autenticar o usuário
+                    // Se a autenticação for bem-sucedida, recuperar o ID do usuário do banco de dados
+                    $sql_cod = "SELECT id_user FROM usuario WHERE email = '$email' AND password = '$senha'";
+                    $result = $mysqli->query($sql_cod);
+
+                    if ($result->num_rows == 1) {
+                        $row = $result->fetch_assoc();
+                        $id_do_usuario = $row['id_user'];
+
+                        // Iniciar sessão e armazenar o ID do usuário na sessão
+                        session_start();
+                        $_SESSION['id_user'] = $id_do_usuario;
                     }
 
-                    $_SESSION['id_user'] = $id_do_usuario['id_user']; //Armazena o id do usuário logado;
                     $_SESSION['email'] = $usuario['email']; //Amazena o valores do banco relacionado ao ID, na sessão;
-                    $_SESSION['nome'] = $usuario['nome']; //Amazena o valores do banco relacionado ao nome, na sessão;
                     header("Location: gen_tarefas.php"); //Redireciona o usuário para a tela principal;
                     exit;
                     //Basicamente a sessão deixa esses dados armazenados para que possa ser utilizado em outro momento, até mesmo em outra página; 

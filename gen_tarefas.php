@@ -1,34 +1,21 @@
 <?php
 // Inclui o arquivo de conexão com o banco de dados
 include('conexao.php');
+session_start(); // Inicia uma sessão;
 
-if (!isset($_SESSION)) { // Verifica se existe uma sessão iniciada
-    session_start(); // Inicia uma sessão caso não tenha
-}
 
-// Verifique se a variável de sessão está definida e obtenha seu valor
 if (isset($_SESSION['id_user'])) {
     $id_do_usuario = $_SESSION['id_user'];
 
-
-    $sql = "INSERT INTO tarefas (id_user, descript) VALUES ('$id_do_usuario', '$descricao')"; // Constrói a consulta SQL
-
-    mysqli_query($conn, $sql);
-    // Executa a consulta SQL 
-
-    // Use o valor da variável de sessão onde for necessário
-    echo "O ID do usuário é: " . $id_do_usuario;
+    // Verifica se a variável $descricao está definida antes de usá-la
+    if (isset($_POST['descript'])) {
+        $descricao = $_POST['descript'];
+        $sql = "INSERT INTO tarefas (id_user, descript) VALUES ('$id_do_usuario', '$descricao')";
+        mysqli_query($mysqli, $sql);
+        echo "Tarefa inserida com sucesso!";
+    }
 } else {
     echo "O ID do usuário não está definido na sessão.";
-}
-
-// Adiciona uma nova tarefa
-if (isset($_POST['new-task'])) {
-    // Obtém a descrição da tarefa do   
-    $descricao = $_POST['descript'];
-
-    // Obtém o ID do usuário logado
-    $id_do_usuario = $_SESSION['id_user'];
 }
 
 // Editar uma tarefa
@@ -39,15 +26,15 @@ if (isset($_POST['edit'])) {
 
     // Verifica se a tarefa pertence ao usuário logado
     $sql_check = "SELECT * FROM tarefas WHERE id_task = $task_id AND id_user = $id_do_usuario";
-    $result_check = $conn->query($sql_check);
+    $result_check = $mysqli->query($sql_check);
 
     if ($result_check->num_rows > 0) {
         // Atualiza a tarefa apenas se ela pertencer ao usuário logado
         $sql_update = "UPDATE tarefas SET descript = '$descricao' WHERE id_task = $task_id";
-        if ($conn->query($sql_update) === TRUE) {
+        if ($mysqli->query($sql_update) === TRUE) {
             echo "Tarefa atualizada com sucesso!";
         } else {
-            echo "Erro ao atualizar a tarefa: " . $conn->error;
+            echo "Erro ao atualizar a tarefa: " . $mysqli->error;
         }
     } else {
         echo "Você não tem permissão para editar esta tarefa.";
@@ -61,15 +48,15 @@ if (isset($_POST['delete'])) {
 
     // Verifica se a tarefa pertence ao usuário logado
     $sql_check = "SELECT * FROM tarefas WHERE id_task = $task_id AND id_user = $id_do_usuario";
-    $result_check = $conn->query($sql_check);
+    $result_check = $mysqli->query($sql_check);
 
     if ($result_check->num_rows > 0) {
         // Exclui a tarefa apenas se ela pertencer ao usuário logado
         $sql_delete = "DELETE FROM tarefas WHERE id_task = $task_id";
-        if ($conn->query($sql_delete) === TRUE) {
+        if ($mysqli->query($sql_delete) === TRUE) {
             echo "Tarefa excluída com sucesso!";
         } else {
-            echo "Erro ao excluir a tarefa: " . $conn->error;
+            echo "Erro ao excluir a tarefa: " . $mysqli->error;
         }
     } else {
         echo "Você não tem permissão para excluir esta tarefa.";
@@ -91,8 +78,8 @@ if (isset($_POST['delete'])) {
 <body>
     <div class="container">
         <div id="new-task">
-            <input type="text" placeholder="Enter The Task Here..." />
-            <button id="push" name="new-task">Add</button>
+            <input type="text" name="descript" placeholder="Enter The Task Here..." />
+            <button id="push">Add</button>
         </div>
         <div id="tasks"></div>
     </div>
@@ -177,22 +164,42 @@ if (isset($_POST['delete'])) {
 
         //Function To Add New Task
         document.querySelector("#push").addEventListener("click", () => {
-            disableButtons(false);
-            if (newTaskInput.value.length == 0) {
+            // Obter a descrição da nova tarefa
+            let descricao = newTaskInput.value;
+
+            // Verificar se a descrição está vazia
+            if (descricao.trim() === "") {
                 alert("Please Enter A Task");
-            } else {
-                if (localStorage.getItem("updateNote") == null) {
-                    localStorage.setItem(count + "_" + newTaskInput.value, false);
-                } else {
-                    let existingCount = localStorage.getItem("updateNote").split("_")[0];
-                    localStorage.removeItem(localStorage.getItem("updateNote"));
-                    localStorage.setItem(existingCount + "_" + newTaskInput.value, false);
-                    localStorage.removeItem("updateNote");
-                }
-                count += 1;
-                newTaskInput.value = "";
-                displayTasks();
+                return; // Não faça nada se a descrição estiver vazia
             }
+
+            // Criar uma instância do objeto XMLHttpRequest
+            var xhr = new XMLHttpRequest();
+
+            // Configurar a requisição
+            xhr.open("POST", "gen_tarefas.php", true);
+            xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+
+            // Lidar com a resposta
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState === XMLHttpRequest.DONE) {
+                    if (xhr.status === 200) {
+                        // Exibir a mensagem retornada pelo servidor
+                        alert(xhr.responseText);
+                        // Atualizar a lista de tarefas após inserção bem-sucedida
+                        if (xhr.responseText.includes("sucesso")) {
+                            // Chamar a função para exibir as tarefas
+                            displayTasks();
+                        }
+                    } else {
+                        // Exibir mensagem de erro se a requisição falhar
+                        alert("Erro ao adicionar tarefa.");
+                    }
+                }
+            };
+
+            // Enviar a solicitação com os dados da tarefa
+            xhr.send("descript=" + encodeURIComponent(descricao));
         });
     </script>
 </body>
